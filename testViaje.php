@@ -13,13 +13,14 @@
  * Inicializa el arreglo con la información de los pasajeros.
  * @return array
  */
+
 function iniciarArregloPasajeros{
   $listadoPasajeros = [];
   return $listadoPasajeros;
 }
 
 /**
-*
+* 
 */
 class Viaje{
   private $codigo;
@@ -30,8 +31,9 @@ class Viaje{
   public function __construct($codigoViaje, $destinoViaje, $maxPasajerosViaje, $listaPasajerosViaje){
     $this -> codigo = $codigoViaje;
     $this -> destino = $destinoViaje;
-    $this -> maxPasjeros = $maxPasajerosViaje;
+    $this -> maxPasajeros = $maxPasajerosViaje;
     $this -> listaPasajeros = $listaPasajerosViaje;
+
   }  
   public function setCodigo($codigoViaje){
     $this -> codigo = $codigoViaje;
@@ -51,9 +53,17 @@ class Viaje{
   public function getMaxPasajeros(){
     return $this -> maxPasajeros;
   }
-  public function setListaPasajeros($listaPasajerosViaje){
+  public function setListaPasajeros($listaPasajerosViaje){ //QUE ESTA FUNCIÓN ARME LOS PASAJEROS Y HAGA UN ARRAY
     $this -> listaPasajeros = $listaPasajerosViaje;
   }
+
+  public function setListaPasajeros($pasajero){ //QUE ESTA FUNCIÓN ARME LOS PASAJEROS Y HAGA UN ARRAY
+    if ($this -> maxPasajeros < len($listaPasajerosViaje)){
+      array_push($listaPasajerosViaje, $pasajero)
+
+    }
+  }
+  
   public function getListaPasajeros(){
     return $this -> listaPasajeros;
   }  
@@ -66,6 +76,9 @@ class Viaje{
 * return array
 */
 function agregarPasajero($nombrePasaj, $apellidoPasaj, $numeroDocPasaj){
+  $pasajero = new Pasajero(nombre, apellido, documento) //MODIFICAR Y HACER UNA CLASE PASAJERO
+  
+  
   $pasajero["nombre"] = $nombrePasaj;
   $pasajero["apellido"] = $apellidoPasaj;
   $pasajero["numeroDocumento"] = $numeroDocPasaj; 
@@ -93,6 +106,18 @@ function seleccionarOpcion()
     } while ($opcion <= 0 || $opcion > 8);
     return $opcion;
 }
+
+function editPasajero(documento){
+
+}
+
+for ($i = 0; $i <= len(getListaPasajeros); $i++) {
+  if ($listaPasajeros[$i,"numeroDoc"] == documento) {
+    $nombreNuevo=trim(fgets(STDIN));
+    $listaPasajeros[$i,"nombre"] = $listaPasajeros[$i] -> setNombrePasajero($nombreNuevo);
+  }
+}
+
 
 
 
@@ -123,7 +148,7 @@ do{
       //Ver información de un viaje.
       break;
   } while ($opcion !=4);
-  echo "-- Fin del programa --
+}  
+  echo "-- Fin del programa --";
 
-
-  
+// Preguntar si conviene hacer dos clases por separado (Viaje y Pasajero) porque Viaje no puede modificar valores de atributos que no estén incluídos en sí mismo (dijo mi amigo que trabaja en Ualá que no es buena practica).
