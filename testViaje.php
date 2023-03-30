@@ -1,105 +1,12 @@
 <?php
 
+include_once("claseVuelos.php");
+include_once("funciones.php");
+
 #De cada viaje se precisa almacenar el código del mismo, destino, cantidad máxima de pasajeros y los pasajeros del viaje.
 #Realice la implementación de la clase Viaje e implemente los métodos necesarios para modificar los atributos de dicha clase (incluso los datos de los pasajeros).
 #Utilice un array que almacene la información correspondiente a los pasajeros. Cada pasajero es un array asociativo con las claves “nombre”, “apellido” y “numero de documento”.
 #Implementar un script testViaje.php que cree una instancia de la clase Viaje y presente un menú que permita cargar la información del viaje, modificar y ver sus datos.
-
-/**************************************/
-/***** DEFINICION DE FUNCIONES ********/
-/**************************************/
-
-/**
- * Inicializa el arreglo con la información de los pasajeros.
- * @return array
- */
-function iniciarListaPasajeros{
-  $listadoPasajeros = [];
-  return $listadoPasajeros;
-}
-
-/**
- * Inicializa el arreglo con la información de los vuelos.
- * @return array
- */
-function iniciarListaVuelos{
-  $listadoVuelos = [];
-  return $listadoVuelos;
-}
-
-/**
-* 
-*/
-class Viaje{
-  private $codigo;
-  private $destino;
-  private $maxPasajeros;
-  private $listaPasajeros
-  
-  public function __construct($codigoViaje, $destinoViaje, $maxPasajerosViaje, $listaPasajerosViaje){
-    $this -> codigo = $codigoViaje;
-    $this -> destino = $destinoViaje;
-    $this -> maxPasajeros = $maxPasajerosViaje;
-    $this -> listaPasajeros = $listaPasajerosViaje;
-
-  }  
-  public function setCodigo($codigoViaje){
-    $this -> codigo = $codigoViaje;
-  }
-  public function getCodigo(){
-    return $this -> codigo;
-  }
-  public function setDestino($destinoViaje){
-    $this -> destino = $destinoViaje;
-  }
-  public function getDestino(){
-    return $this -> destino;
-  }
-  public function setMaxPasajeros($maxPasajerosViaje){
-    $this -> maxPasajeros = $maxPasajerosViaje;
-  }
-  public function getMaxPasajeros(){
-    return $this -> maxPasajeros;
-  }
-  public function setListaPasajeros($listaPasajerosViaje){
-    $this -> listaPasajeros = $listaPasajerosViaje;
-  }  
-  public function getListaPasajeros(){
-    return $this -> listaPasajeros;
-  }  
-}
-
-
-
-class Pasajero{
-  private $nombre;
-  private $apellido;
-  private $numeroDoc;
-  
-  public function __construct($nombrePasaj, $apellidoPasaj, $numeroDocPasaj){
-    $this -> nombre = $nombrePasaj;
-    $this -> apellido = $apellidoPasaj;
-    $this -> numeroDoc = $numeroDocPasaj;
-  }
-  
-  public function setNombre($nombrePasajero){
-    $this -> nombre = $nombrePasajero;
-  }
-  public function getNombre(){
-    return $this -> nombre;
-  }
-  public function setApellido($apellidoPasajero){
-    $this -> apellido = $apellidoPasajero;
-  }
-  public function getApellido(){
-    return $this -> apellido;
-  }
-  public function setNumeroDoc($numeroDocPasajero){
-    $this -> numeroDoc = $numeroDocPasajero;
-  }
-  public function getNumeroDoc(){
-    return $this -> numeroDoc;
-  }  
 
 /**
 * Esta función crea una instancia del objeto Pasajero.
@@ -133,17 +40,6 @@ function seleccionarOpcion()
         }
     } while ($opcion <= 0 || $opcion > 8);
     return $opcion;
-}
-
-function editPasajero(documento){
-
-}
-
-for ($i = 0; $i <= len(getListaPasajeros); $i++) {
-  if ($listaPasajeros[$i,"numeroDoc"] == documento) {
-    $nombreNuevo=trim(fgets(STDIN));
-    $listaPasajeros[$i,"nombre"] = $listaPasajeros[$i] -> setNombrePasajero($nombreNuevo);
-  }
 }
 
 /**
@@ -268,106 +164,102 @@ do{
       //Usar la función para armar pasajeros y armar el array $listadoPasajero para después incluirlo en una instancia de Viaje
       //PROBAR ESTO EN LA CLASE VIAJE (para nombrar las instancias como v+código de vuelo) -> ${"string".$variableConResultadoAUsar}
       ${"v".$codigoViaje} = new Vuelo($codigoViaje, $destinoViaje, $maxPasajerosViaje, $listadoPasajeros);
-      array_push($listadoVuelos, ${"v".$codigoViaje);
+      array_push($listadoVuelos, ${"v".$codigoViaje});
       break;
     case 2:
       //Modificar información del viaje.
-      do{
-        echo "Ingrese el código del vuelo del cual desea modificar un dato: ";
-        $codigoVueloAMod = esNumero(); 
-        echo "\n   1) Modificar información del vuelo.";
-        echo "\n   2) Modificar información de un pasajero.";
-        echo "\n   3) Volver al menú anterior.";
-        do {
+      echo "Ingrese el código del vuelo del cual desea modificar un dato: ";
+      $codigoVueloAMod = esNumero(); 
+      echo "\n   1) Modificar información del vuelo.";
+      echo "\n   2) Modificar información de un pasajero.";
+      echo "\n   3) Volver al menú anterior.";
+      do {
         echo "\nIngrese un número del 1 al 3 para elegir la opción: ";
         $opcion = trim(fgets(STDIN));
         if ($opcion <= 0 || $opcion > 3) {
           echo "\nPor favor, ingrese un número valido.\n";
-      } while ($opcion <= 0 || $opcion > 3);
+        }
+      }while ($opcion <= 0 || $opcion > 3);
       switch ($opcion){
         case 1:
-          do{
           echo "\n   1) Modificar código del vuelo.";
           echo "\n   2) Modificar destino del vuelo.";
           echo "\n   3) Modificar número máximo de pasajeros del vuelo.";
           echo "\n   4) Volver al menú anterior.";
-          do {
+          do{
             echo "\nIngrese un número del 1 al 4 para elegir la opción: ";
             $opcion = trim(fgets(STDIN));
             if ($opcion <= 0 || $opcion > 4) {
               echo "\nPor favor, ingrese un número valido.\n";
-          } while ($opcion <= 0 || $opcion > 4);
-            switch ($opcion){
-              case 1:
-                //Buscar cómo ubicar al objeto ya creado.
-                echo "Ingrese el código nuevo: ";
-                $codigoVueloNuevo = esNumero();
-                $nombreViaje -> codigo = setCodigo($codigoVueloNuevo) //Usar $codigoVueloAMod para buscar el vuelo?
-                  echo "El nuevo código es ".$nombreViaje -> getCodigo().".";
-              break;
-              case 2:
-                echo "Ingrese el nuevo destino: ";
-                $destinoNuevo = esString();
-                $nombreViaje -> destino = setDestino($destinoNuevo);
-                echo "El nuevo destino es ".$nombreViaje -> getDestino().".";
-              break;
-              case 3:
-                echo "Ingrese el nuevo número máximo de pasajeros: ";
-                $numMaxNuevo = esNumero();
-                $nombreViaje -> maxPasajeros = setMaxPasajeros($numMaxNuevo);
-                echo "El nuevo número máximo de pasajeros es ".$nombreViaje -> getMaxPasajeros().".";
-              break;
-            }while ($opcion !=4);
+            } 
+          }while ($opcion <= 0 || $opcion > 4);
+          switch ($opcion){
+            case 1:
+              //Buscar cómo ubicar al objeto ya creado.
+              echo "Ingrese el código nuevo: ";
+              $codigoVueloNuevo = esNumero();
+              $nombreViaje -> codigo = setCodigo($codigoVueloNuevo); //Usar $codigoVueloAMod para buscar el vuelo?
+              echo "El nuevo código es ".$nombreViaje -> getCodigo().".";
+            break;
+            case 2:
+              echo "Ingrese el nuevo destino: ";
+              $destinoNuevo = esString();
+              $nombreViaje -> destino = setDestino($destinoNuevo);
+              echo "El nuevo destino es ".$nombreViaje -> getDestino().".";
+            break;
+            case 3:
+              echo "Ingrese el nuevo número máximo de pasajeros: ";
+              $numMaxNuevo = esNumero();
+              $nombreViaje -> maxPasajeros = setMaxPasajeros($numMaxNuevo);
+              echo "El nuevo número máximo de pasajeros es ".$nombreViaje -> getMaxPasajeros().".";
+            break;
+          }
+        }
         break;
-        case 2:
-            do{
-              echo "Ingrese el documento del pasajero a modificar: ";
-              $documentoPasajero = esPasajero();
-              echo "\n   1) Modificar nombre y apellido del pasajero.";
-              echo "\n   2) Modificar documento del pasajero.";
-              echo "\n   3) Volver al menú anterior.";
-              do {
+        case 2:   
+          echo "Ingrese el documento del pasajero a modificar: ";
+          $documentoPasajero = esPasajero();
+          echo "\n   1) Modificar nombre y apellido del pasajero.";
+          echo "\n   2) Modificar documento del pasajero.";
+          echo "\n   3) Volver al menú anterior.";
+          do {
             echo "\nIngrese un número del 1 al 3 para elegir la opción: ";
             $opcion = trim(fgets(STDIN));
             if ($opcion <= 0 || $opcion > 3) {
               echo "\nPor favor, ingrese un número valido.\n";
-          } while ($opcion <= 0 || $opcion > 3);
-                switch ($opcion){ //En todos los cases tengo que hacer un recorrido parcial hasta ubicar el número de documento del pasajero en el array $listadoPasajeros
-                  case 1:                    
-                    echo "Ingrese el nuevo nombre y apellido del pasajero.";
-                    echo "Nombre: ";
-                    $nombreNuevo = esString();
-                    echo "Apellido:";
-                    $apellidoNuevo = esString();
-                    $n = count($listadoPasajero);
-                    $i = 0;
-                    while ($i << $n && ($listadoPasajeros["numeroDoc"] != $documentoPasajero)){
-                    $i = $i+1;
-                    }
-                    $listadoPasajeros[$i]["nombre"] = $nombreNuevo;
-                    $listadoPasajeros[$i]["apellido"] = $apellidoNuevo;
-                    echo "El nuevo nombre y apellido del pasajero es ".$listadoPasajeros[$i]["nombre"]." ".$listadoPasajeros[$i]["apellido"]".";
-                  break;
-                  case 2:
-                    echo "Ingrese el nuevo número de documento del pasajero: ";
-                    $nuevoDocumento = esNumero();
-                    while ($i << $n && ($listadoPasajeros["numeroDoc"] != $documentoPasajero)){
-                    $i = $i+1;
-                    }
-                    $listadoPasajeros[$i]["numeroDoc"] = $documentoNuevo;
-                    echo "El nuevo documento del pasajero es ".$listadoPasajeros[$i]["numeroDoc"].".";
-                  break;
-            } while ($opcion !=3); 
+            } 
+          }while ($opcion <= 0 || $opcion > 3);
+          switch ($opcion){ //En todos los cases tengo que hacer un recorrido parcial hasta ubicar el número de documento del pasajero en el array $listadoPasajeros
+            case 1:                    
+              echo "Ingrese el nuevo nombre y apellido del pasajero.";
+              echo "Nombre: ";
+              $nombreNuevo = esString();
+              echo "Apellido:";
+              $apellidoNuevo = esString();
+              $n = count($listadoPasajero);
+              $i = 0;
+              while ($i << $n && ($listadoPasajeros["numeroDoc"] != $documentoPasajero)){
+                $i = $i+1;
+              }
+              $listadoPasajeros[$i]["nombre"] = $nombreNuevo;
+              $listadoPasajeros[$i]["apellido"] = $apellidoNuevo;
+              echo "El nuevo nombre y apellido del pasajero es ".$listadoPasajeros[$i]["nombre"]." ".$listadoPasajeros[$i]["apellido"].".";
+            break;
+            case 2:
+              echo "Ingrese el nuevo número de documento del pasajero: ";
+              $nuevoDocumento = esNumero();
+              while ($i << $n && ($listadoPasajeros["numeroDoc"] != $documentoPasajero)){
+                $i = $i+1;
+              }
+              $listadoPasajeros[$i]["numeroDoc"] = $documentoNuevo;
+              echo "El nuevo documento del pasajero es ".$listadoPasajeros[$i]["numeroDoc"].".";
+            break;
+          } 
         break;
-      }
-      } while ($opcion !3);
-      break;
     case 3:
     //Ver información de un viaje.
       echo "Ingrese el código del vuelo del cual desea ver la información: ";
-        $codigoVueloInfo = esVuelo();
-        
+        $codigoVueloInfo = esVuelo();   
     break;
-  } while ($opcion !=4);
-}  
-  echo "-- Fin del programa --";
+  } 
+} while ($opcion != 4);
