@@ -205,7 +205,7 @@ do{
                 }
               } while ($respuesta != "s" && $respuesta != "n");
               if ($respuesta == "s"){
-                print_r($listaPasajeros);
+                print_r($listadoVuelos[$k]["listaPasajeros]);
               }
             }
         }
