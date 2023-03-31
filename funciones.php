@@ -1,6 +1,7 @@
 <?php
 
-include_once("claseVuelos.php");
+include_once("claseViaje.php");
+include_once("testViaje.php");
 
 /**************************************/
 /***** DEFINICION DE FUNCIONES ********/
@@ -10,18 +11,20 @@ include_once("claseVuelos.php");
  * Inicializa el arreglo con la información de los pasajeros.
  * return array
  */
-function iniciarListaPasajeros(){
+function iniciarListaPasajeros()
+{
   $listadoPasajeros = [];
   return $listadoPasajeros;
 }
 
 /**
- * Inicializa el arreglo con la información de los vuelos.
+ * Inicializa el arreglo con la información de los viajes.
  * return array
  */
-function iniciarListaVuelos(){
-  $listadoVuelos = [];
-  return $listadoVuelos;
+function iniciarListaViajes()
+{
+  $listadoViajes = [];
+  return $listadoViajes;
 }
 
 /**
@@ -30,109 +33,102 @@ function iniciarListaVuelos(){
  */
 function seleccionarOpcion()
 {
-    //int $opcion
-    echo "\n -------- MENÚ --------\n";
-    echo "\n   1) Cargar información de un viaje.";
-    echo "\n   2) Modificar información de un viaje.";
-    echo "\n   3) Ver información de un viaje.";
-    echo "\n   4) Salir.";
-    do {
-        echo "\nIngrese un número del 1 al 4 para elegir la opción: ";
-        $opcion = trim(fgets(STDIN));
-        if ($opcion <= 0 || $opcion > 4) {
-            echo "\nPor favor, ingrese un número valido.\n";
-        }
-    } while ($opcion <= 0 || $opcion > 8);
-    return $opcion;
+  //int $opcion
+  echo "\n -------- MENÚ --------\n";
+  echo "\n   1) Cargar información de un viaje.";
+  echo "\n   2) Modificar información de un viaje.";
+  echo "\n   3) Ver información de un viaje.";
+  echo "\n   4) Salir.";
+  do {
+    echo "\nIngrese un número del 1 al 4 para elegir la opción: ";
+    $opcion = trim(fgets(STDIN));
+    if ($opcion <= 0 || $opcion > 4) {
+      echo "\nPor favor, ingrese un número valido.\n";
+    }
+  } while ($opcion <= 0 || $opcion > 8);
+
+  return $opcion;
 }
 
 /**
-* Función para verificar que la variable ingresada es numérica (entero) en su totalidad.
-* return int
-*/
-function esEntero(){
+ * Función para verificar que la variable ingresada es numérica (entero) en su totalidad.
+ * @return int
+ */
+function esNumero()
+{
   //int $numero
   $numero = trim(fgets(STDIN));
-  while (!is_int($numero)){
-      echo "El dato requerido debe estar compuesto solo por números enteros: ";
-      $numero = trim(fgets(STDIN));
+
+  while (!is_numeric($numero)) {
+    echo "\nEl dato requerido debe estar compuesto solo por números enteros: ";
+    $numero = trim(fgets(STDIN));
   }
+
   return $numero;
+
 }
 
 /**
-* Función para verificar que la variable ingresada es un string en su totalidad.
-* return string
-*/
-function esString(){
+ * Función para verificar que la variable ingresada es un string en su totalidad.
+ * @return string
+ */
+function esString()
+{
   //string $palabra
   $palabra = trim(fgets(STDIN));
-  while (!ctype_alpha($palabra)){
-      echo "El dato requerido debe estar compuesto solo por letras: ";
-      $palabra = trim(fgets(STDIN));
+  while (!ctype_alpha($palabra)) {
+    echo "\nEl dato requerido debe estar compuesto solo por letras: ";
+    $palabra = trim(fgets(STDIN));
   }
   return $palabra;
 }
 
 /**
-* Función para verificar si un código corresponde a un viaje registrado.
-* return int
-*/
-function esVuelo(){
-  //int $auxiliar
-  echo "Ingrese el código del vuelo a verificar: ";
-  $codigoVuelo = esNumero();
-  $auxiliar = 0;
-  do{
-    for ($i = 0; $i < count($listadoVuelos); $i++) {
-          if (($listadoVuelos[$i]["codigo"] == $codigoVuelo)) {
-              $auxiliar = 1;
-          }
+ * Función para verificar si un viaje ya existe.
+ * @return $int
+ */
+function esRepetido($codigoViaje, $listadoViajes)
+{
+  for ($i = 0; $i < count($listadoViajes); $i++) {
+    if ($listadoViajes[$i]->getCodigo() == $codigoViaje) {
+      return intval(key($listadoViajes));
     }
-    if ($auxiliar !=1){
-      echo "El código ingresado no corresponde a ningún vuelo registrado. Ingrese un código válido:";
-      $codigoVuelo = esNumero();                      
-    }
-  } while ($auxiliar !=1);
-  return $codigoVuelo;
+  }
+  return -1;
 }
 
 /**
-* Función para verificar si un vuelo ya existe.
-* return $int
-*/
-function esRepetido(){
-  $codigoVuelo = esNumero();
-  $auxiliar = 0;
-  do{
-    for ($i = 0; $i < count($listadoVuelos); $i++) {
-          if (($listadoVuelos[$i]["codigo"] == $codigoVuelo)) {
-              $auxiliar = 1;
-          }
+ * Función para verificar si un viaje ya existe.
+ * @return int
+ */
+function docRepetido($codigoViaje, $docPasajero, $listadoViajes)
+{
+  $posicion = esRepetido($codigoViaje, $listadoViajes);
+  $pasajeros = $listadoViajes[$posicion]->getListaPasajeros();
+  for ($j = 0; $j < count($pasajeros); $j++) {
+    if ($pasajeros[$j]["numeroDoc"] == $docPasajero) {
+      return intval(key($pasajeros));
     }
-    if ($auxiliar = 1){
-      echo "El código ingresado corresponde a un vuelo ya registrado. Ingrese un código válido:";
-      $codigoVuelo = esNumero();                      
-    }
-  } while ($auxiliar =1);
-  return $codigoVuelo;
-}  
+  }
+  return -1;
+}
+
 /*
-* Función para crear un pasajero y agregarlo al arreglo.
-* return array
-*/
-function agregarPasajero(){
+ * Función para crear un pasajero y agregarlo al arreglo.
+ * @return array
+ */
+function agregarPasajero($viaje)
+{
   //string $nombrePasaj, $apellidoPasaj
   //int $numeroDocPasaj
-  echo "Indique el nombre del pasajero: ";
+  echo "\nIndique el nombre del pasajero: ";
   $nombrePasaj = esString();
-  $viaje = setNombreP($nombrePasaj);
-  echo "Indique el apellido del pasajero: ";
-  $apellidopasaj = esString();
-  $viaje = setApellidoP($apellidoPasaj);
-  echo "Indique el documento del pasajero (sin puntos): ";
+  $viaje->setNombreP($nombrePasaj);
+  echo "\nIndique el apellido del pasajero: ";
+  $apellidoPasaj = esString();
+  $viaje->setApellidoP($apellidoPasaj);
+  echo "\nIndique el documento del pasajero (sin puntos): ";
   $numeroDocPasaj = esNumero();
-  $viaje = setNumeroDocP($numeroDocPasaj);
-  $pasajero = ["nombre" => $nombrePasaj, "apellido" => $apellidoPasaj, "numeroDoc" => $numeroDocPasaj];
-  return $pasajero;
+  $viaje->setNumeroDocP($numeroDocPasaj);
+  return ["nombre" => $nombrePasaj, "apellido" => $apellidoPasaj, "numeroDoc" => $numeroDocPasaj];
 }
